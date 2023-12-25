@@ -1,6 +1,6 @@
 ### Marxism Lib
 
-![Software](software.gif)
+![Software](demonstracao.gif)
 
 #### Nome do Projeto: Marxism Lib
 
