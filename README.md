@@ -4,7 +4,7 @@
 
 #### Nome do Projeto: Marxism Lib
 
-#### Versão: Alpha 1.0
+#### Versão: Alpha 0.1
 
 #### Descrição Geral:
 
