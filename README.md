@@ -16,7 +16,7 @@ GPL v3
 
 #### Tecnologia:
 
-A tecnologia usada é Python com a biblioteca PySide 2
+A tecnologia usada é Python com a biblioteca PySide 6
 
 #### Status Atual
 
