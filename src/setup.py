@@ -1,5 +1,5 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QLineEdit, QPushButton, QVBoxLayout, QWidget, QLabel, QMessageBox, QScrollArea
+from PySide6.QtWidgets import QApplication, QMainWindow, QLineEdit, QPushButton, QVBoxLayout, QWidget, QLabel, QScrollArea, QMessageBox
 from PySide6.QtGui import QAction, QFont, QPixmap
 from PySide6.QtCore import Qt
 from search_data import search_categories
@@ -13,7 +13,7 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(500, 500)
         layout = QVBoxLayout()
 
-        # Barra de menus
+        # Barra de menu
         menu_bar = self.menuBar()
 
         # Menu de Arquivo
@@ -34,8 +34,8 @@ class MainWindow(QMainWindow):
         license_action.triggered.connect(self.show_license)
         help_menu.addAction(license_action)
 
-        # Texto informativo de frente
-        info_label = QLabel("Busque textos de livros aqui")
+        # Texto informativo
+        info_label = QLabel("Busque trechos de livros")
         info_label.setAlignment(Qt.AlignCenter)  # Centralizar o texto
 
         # Configurando a fonte para ser negrito e maior
@@ -47,7 +47,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(info_label)
 
         # Imagem
-        image_label = QLabel() #biblioteca
+        image_label = QLabel()
         pixmap = QPixmap('imagem.png').scaled(96, 96, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         image_label.setPixmap(pixmap)
         image_label.setAlignment(Qt.AlignCenter)
@@ -70,9 +70,12 @@ class MainWindow(QMainWindow):
         container.setLayout(layout)
         self.setCentralWidget(container)
 
-        # Área de rolagem do resultado
+        # Área de rolagem do texto
         self.result_label = QLabel()
         self.result_label.setWordWrap(True)
+        self.result_label.setAlignment(Qt.AlignLeft)
+        self.result_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
+
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(self.result_label)
@@ -83,21 +86,22 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(container)
 
 
-
-    def on_search(self): # propriedade da busca
+    def on_search(self):
         search_query = self.search_bar.text()
         results = []
 
         for category in search_categories:
-            result = category.search(search_query)
-            if result:
-                results.append(f"{category.name.capitalize()}: {result}")
+            category_results = category.search(search_query)
+            if category_results:
+                # Formatar apenas o nome da categoria em negrito
+                formatted_category = f"<b>{category.name.capitalize()}</b>"
+                formatted_results = "<br>".join(f"{formatted_category} - {result}" for result in category_results)
+                results.append(formatted_results)
 
         if results:
             self.result_label.setText('\n\n'.join(results))
         else:
             self.result_label.setText("Resultado não encontrado.")
-
 
     def clear_search(self):
         # Limpa a busca
@@ -105,7 +109,7 @@ class MainWindow(QMainWindow):
         self.result_label.clear()
 
     def show_about(self):
-        QMessageBox.information(self, "Sobre", "Programa baseado que busca texto de livros, versão 0.1 alpha")
+        QMessageBox.information(self, "Sobre", "Programa baseado que busca texto de livros, versão 0.1")
 
     def show_license(self):
         QMessageBox.information(self, "Licença", "A licença para este software é GPLv3 consulte https://www.gnu.org/licenses/")
